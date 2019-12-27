@@ -1,5 +1,5 @@
 % Sound analysis 26-12-2019 
-% @Copyright EE-KKU
+% Coding by Patorn-J
 
 % setup parameter (upper frequency- average sampling rate - Fourier sampling rate)
 limit = 200 ;
