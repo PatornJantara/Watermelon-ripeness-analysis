@@ -1,2 +1,2 @@
 # sound_analyzer
-an sound analysis matlab program  
+sound analysis using MATLAB  
