@@ -1,227 +1,143 @@
 % Sound analysis 26-12-2019 
 % Coding by Patorn - J
+% Considering different Amplitude in Frequency domain each Frequency's period
+% between Unripe sound and Ripe sound
 
-% setup parameter (upper frequency- average sampling rate - Fourier sampling rate)
-limit = 200 ; 
-average_sampling_rate = 10 ;  % sampling
-Fs = 1000;
-% plot (time domain - frequency domain - discrete frequency domain)
+clc;
+clear ;
 
-% unripe.wav
-[unripe_1, fs] = audioread('1point1.1.wav');
-[unripe_2, fs] = audioread('1point1.2.wav');
-[unripe_3, fs] = audioread('1point1.3.wav');
-[unripe_4, fs] = audioread('1point1.4.wav');
-[unripe_5, fs] = audioread('1point1.5.wav');
-[unripe_6, fs] = audioread('1point1.6.wav');
-[unripe_7, fs] = audioread('1point1.7.wav');
-[unripe_8, fs] = audioread('1point1.8.wav');
-[unripe_9, fs] = audioread('1point1.9.wav');
-[unripe_10, fs] = audioread('1point1.10.wav');
+Fs = 1000 ;
+abs_average_unripe = 0;
+abs_average_ripe = 0 ;
+xlimit = 120 ; ylimit = 140 ;
+unripe_number = 0 ; ripe_number = 0;
+average_sampling_rate = 10 ; step = 5 ;
 
-% ripe.wav
-[ripe_1, fs] = audioread('2point1.1.wav');
-[ripe_2, fs] = audioread('2point1.2.wav');
-[ripe_3, fs] = audioread('2point1.3.wav');
-[ripe_4, fs] = audioread('2point1.4.wav');
-[ripe_5, fs] = audioread('2point1.5.wav');
-[ripe_6, fs] = audioread('2point1.6.wav');
-[ripe_7, fs] = audioread('2point1.7.wav');
-[ripe_8, fs] = audioread('2point1.8.wav');
-[ripe_9, fs] = audioread('2point1.9.wav');
-[ripe_10, fs] = audioread('2point1.10.wav');
+wavFiles = dir(fullfile('C:\Users\User', '*.wav'));
 
-% tranform to frequency domian unripe
-unripe_1_fft = fft(unripe_1,Fs);
-unripe_2_fft = fft(unripe_2,Fs);
-unripe_3_fft = fft(unripe_3,Fs);
-unripe_4_fft = fft(unripe_4,Fs);
-unripe_5_fft = fft(unripe_5,Fs);
-unripe_6_fft = fft(unripe_6,Fs);
-unripe_7_fft = fft(unripe_7,Fs);
-unripe_8_fft = fft(unripe_8,Fs);
-unripe_9_fft = fft(unripe_9,Fs);
-unripe_10_fft = fft(unripe_10,Fs);
+f1 = figure; 
+f2 = figure;
+for k=1:length(wavFiles)
+        wavFile = wavFiles(k).name;
+        [sound,fs] = audioread(wavFile);
+        if strfind(wavFile,'1point') == 1
+            unripe_number = unripe_number +1 ; 
+            unripe = fft(sound,Fs);
+            abs_unripe = abs(unripe(:,1));
+                figure(f1)
+                hold on
+                plot(abs_unripe,'b')
+                xlabel('Frequency'); ylabel('Amplitude');title('Unripe Sound Frequency Domain');
+                xlim([0,xlimit]);ylim([0 ylimit]);
+            abs_average_unripe = abs_average_unripe + abs_unripe ;
+        else
+            ripe_number = ripe_number +1 ; 
+            ripe = fft(sound,Fs);
+            abs_ripe = abs(ripe(:,1));
+                figure(f2)
+                hold on
+                plot(abs_ripe,'r')
+                xlabel('Frequency'); ylabel('Amplitude');title('Ripe SoundFrequency Domain');
+                xlim([0,xlimit]);ylim([0 ylimit]);
+            abs_average_ripe = abs_average_ripe + abs_ripe ;
+        end
 
-% tranform to frequency domian ripe
-ripe_1_fft = fft(ripe_1,Fs);
-ripe_2_fft = fft(ripe_2,Fs);
-ripe_3_fft = fft(ripe_3,Fs);
-ripe_4_fft = fft(ripe_4,Fs);
-ripe_5_fft = fft(ripe_5,Fs);
-ripe_6_fft = fft(ripe_6,Fs);
-ripe_7_fft = fft(ripe_7,Fs);
-ripe_8_fft = fft(ripe_8,Fs);
-ripe_9_fft = fft(ripe_9,Fs);
-ripe_10_fft = fft(ripe_10,Fs);
-
-% abs unripe
-abs_unripe_1_fft = abs(unripe_1_fft(:,1));
-abs_unripe_2_fft = abs(unripe_2_fft(:,1));
-abs_unripe_3_fft = abs(unripe_3_fft(:,1));
-abs_unripe_4_fft = abs(unripe_4_fft(:,1));
-abs_unripe_5_fft = abs(unripe_5_fft(:,1));
-abs_unripe_6_fft = abs(unripe_6_fft(:,1));
-abs_unripe_7_fft = abs(unripe_7_fft(:,1));
-abs_unripe_8_fft = abs(unripe_8_fft(:,1));
-abs_unripe_9_fft = abs(unripe_9_fft(:,1));
-abs_unripe_10_fft = abs(unripe_10_fft(:,1));
-
-% abs ripe
-abs_ripe_1_fft = abs(ripe_1_fft(:,1));
-abs_ripe_2_fft = abs(ripe_2_fft(:,1));
-abs_ripe_3_fft = abs(ripe_3_fft(:,1));
-abs_ripe_4_fft = abs(ripe_4_fft(:,1));
-abs_ripe_5_fft = abs(ripe_5_fft(:,1));
-abs_ripe_6_fft = abs(ripe_6_fft(:,1));
-abs_ripe_7_fft = abs(ripe_7_fft(:,1));
-abs_ripe_8_fft = abs(ripe_8_fft(:,1));
-abs_ripe_9_fft = abs(ripe_9_fft(:,1));
-abs_ripe_10_fft = abs(ripe_10_fft(:,1));
-
-% unripe /10
-abs_unripe_fft = abs_unripe_1_fft + abs_unripe_2_fft+abs_unripe_3_fft;
-abs_unripe_fft = abs_unripe_fft+abs_unripe_4_fft+abs_unripe_5_fft+abs_unripe_6_fft;
-abs_unripe_fft = abs_unripe_fft +abs_unripe_7_fft+abs_unripe_8_fft+abs_unripe_9_fft+abs_unripe_10_fft;
-abs_unripe_fft = abs_unripe_fft/10 ;
-
-% ripe /10
-abs_ripe_fft = abs_ripe_1_fft + abs_ripe_2_fft+abs_ripe_3_fft;
-abs_ripe_fft =abs_ripe_fft +abs_ripe_4_fft+abs_ripe_5_fft+abs_ripe_6_fft;
-abs_ripe_fft =abs_ripe_fft +abs_ripe_7_fft+abs_ripe_8_fft+abs_ripe_9_fft+abs_ripe_10_fft;
-abs_ripe_fft = abs_ripe_fft/10;
-
-% unripe
+end
+ hold off 
+ 
+ abs_average_unripe = abs_average_unripe / unripe_number ;
+ abs_average_unripe = abs(abs_average_unripe(:,1));       
+ figure 
+    plot(abs_average_unripe,'b')
+    xlabel('Frequency'); ylabel('Amplitude');title('Average Unripe Sound Frequency Domain');
+    xlim([0,xlimit]);ylim([0 ylimit]);
+    
+ 
+ abs_average_ripe = abs_average_ripe / ripe_number ;
+ abs_average_ripe = abs(abs_average_ripe(:,1));       
+ figure 
+    plot(abs_average_ripe,'r')
+    xlabel('Frequency'); ylabel('Amplitude');title('Average Ripe Sound Frequency Domain');
+    xlim([0,xlimit]);ylim([0 ylimit]);
+    
 figure
 hold on
-plot(abs_unripe_1_fft,'b');plot(abs_unripe_2_fft,'b');plot(abs_unripe_3_fft,'b');
-plot(abs_unripe_4_fft,'b');plot(abs_unripe_5_fft,'b');plot(abs_unripe_6_fft,'b');
-plot(abs_unripe_7_fft,'b');plot(abs_unripe_8_fft,'b');plot(abs_unripe_9_fft,'b');plot(abs_unripe_10_fft,'b');
-hold off
-xlabel('Frequency'); ylabel('Amplitude');
-title('Unripe Watermelon Sound in Frequency Domain')
-xlim([0,limit]);
-ylim([0 120]);
-
-% unripe average
-figure
-plot(abs_unripe_fft,'b'); 
-xlabel('Frequency'); ylabel('Amplitude');
-title('Unripe Watermelon Sound in Frequency Domain - Average')
-xlim([0,limit]);
-ylim([0 120]);
-
-% ripe
-figure
-hold on
-plot(abs_ripe_1_fft,'b');plot(abs_ripe_2_fft,'b');plot(abs_ripe_3_fft,'b');
-plot(abs_ripe_4_fft,'b');plot(abs_ripe_5_fft,'b');plot(abs_ripe_6_fft,'b');
-plot(abs_ripe_7_fft,'b');plot(abs_ripe_8_fft,'b');plot(abs_ripe_9_fft,'b');plot(abs_ripe_10_fft,'b');
-hold off
-xlabel('Frequency'); ylabel('Amplitude');
-title('Ripe Watermelon Sound in Frequency Domain')
-xlim([0,limit]);
-ylim([0 120]);
-
-% ripe average
-figure
-plot(abs_ripe_fft,'r'); 
-xlabel('Frequency'); ylabel('Amplitude');
-title('Ripe Watermelon Sound in Frequency Domain - Average')
-xlim([0,limit]);
-ylim([0 120]);
-
-% comparision
-figure
-hold on
-fourier_transform_unripe = plot(abs_unripe_fft,'b'); 
-fourier_transform_ripe = plot(abs_ripe_fft,'r'); 
-xlabel('Frequency'); ylabel('Amplitude');
-title('Signal frequency Domain');
-legend({'unripe','ripe'}); 
-xlim([0,limit]);
+    plot(abs_average_unripe,'b'); 
+    plot(abs_average_ripe,'r'); 
+    xlabel('Frequency'); ylabel('Amplitude');
+    title('Unripe VS Ripe'); legend({'Unripe','Ripe'}); 
+    xlim([0,xlimit]); ylim([0,ylimit]);
 hold off
 
-% discrete
 figure
-sampling_fourier_transform = stem(abs_unripe_fft) ; xlabel('Frequency'); ylabel('Amplitude');
-title('Unripe-Discrete signal frequency Domain')
-xlim([0,limit])
-ylim([0 120]);
+    stem(abs_average_unripe) ;
+    xlabel('Frequency'); ylabel('Amplitude');
+    title('Unripe Discrete Frequency Domain')
+    xlim([0,xlimit]) ; ylim([0 ylimit]);
 
 figure
-sampling_fourier_transform = stem(abs_ripe_fft,'r') ; xlabel('Frequency'); ylabel('Amplitude');
-title('Ripe-Discrete signal frequency Domain')
-xlim([0,limit])
-ylim([0 120]);
+    stem(abs_average_ripe,'color','r') ;
+    xlabel('Frequency'); ylabel('Amplitude');
+    title('Ripe Discrete Frequency Domain')
+    xlim([0,xlimit]) ; ylim([0 ylimit]);
 
-% sampling plot setup
 
-%plot average unripe 5 
-sample_unripe = abs_unripe_fft(1:1:limit);
+sample_unripe = abs_average_unripe(1:1:length(abs_average_unripe));
+
 i = 1 ;
 old_i = 0 ;
 average_unripe_i = 0 ;
 average_sampling_unripe = 0;
 old_average_sampling_unripe = 0 ;
-next = 10 ; 
-figure
-hold on
-while i <= limit 
-    average_unripe_i = average_unripe_i+sample_unripe(i);  
-    if mod(i,next) == 0 
-        average_sampling_unripe = average_unripe_i/average_sampling_rate;
-        plot([old_i i-5], [old_average_sampling_unripe , average_sampling_unripe],'b' )
-        old_average_sampling_unripe = average_sampling_unripe ;
-        old_i = i-5 ;
-        average_unripe_i = 0 ;
-        average_sampling_unripe = 0 ;
-        i = i-5 ;
-        next = next + 5 ;
-    end
-    i = i+1 ;
-end
+next = average_sampling_rate ; 
 
-%plot average ripe 5 
-sample_ripe = abs_ripe_fft(1:1:limit);
+figure
+    hold on
+    while i <= length(abs_average_unripe) 
+        average_unripe_i = average_unripe_i+sample_unripe(i);  
+        if mod(i,next) == 0 
+            average_sampling_unripe = average_unripe_i/average_sampling_rate;
+            plot([old_i i-step], [old_average_sampling_unripe , average_sampling_unripe],'b' )
+            old_average_sampling_unripe = average_sampling_unripe ;
+            old_i = i-step ;
+            average_unripe_i = 0 ;
+            average_sampling_unripe = 0 ;
+            i = i-step ;
+            next = next + step ;
+        end
+    end
+    
+sample_ripe = abs_average_ripe(1:1:length(abs_average_ripe));
+
 i = 1 ;
 old_i = 0 ;
 average_ripe_i = 0 ;
 average_sampling_ripe = 0;
 old_average_sampling_ripe = 0 ;
-next = 10 ; 
+next = average_sampling_rate ; 
 
-while i <= limit 
+while i <= length(abs_average_ripe) 
     average_ripe_i = average_ripe_i+sample_ripe(i);  
     if mod(i,next) == 0 
         average_sampling_ripe = average_ripe_i/average_sampling_rate;
-        plot([old_i i-5], [old_average_sampling_ripe , average_sampling_ripe],'r' )
+        plot([old_i i-step], [old_average_sampling_ripe , average_sampling_ripe],'r' )
         old_average_sampling_ripe = average_sampling_ripe ;
-        old_i = i-5 ;
+        old_i = i-step ;
         average_ripe_i = 0 ;
         average_sampling_ripe = 0 ;
-        i = i-5 ;
-        next = next + 5 ;
+        i = i-step ;
+        next = next + step ;
     end
     i = i+1 ;
 end
 
-cut_off_frequency = 0 ;
-cut_off = abs(sample_unripe-sample_ripe);
-largest = cut_off(1);
-for i = 1:length(cut_off)
-    if cut_off(i) > largest;
-        largest = cut_off(i);
-        cut_off_frequency = i ;
-    end
-end
+    hold off
+    xlabel('Frequency'); ylabel('Amplitude');
+    title('Unripe Average Frequency Domain')
+    xlim([0,xlimit]) ; ylim([0 ylimit]);
+    
+    
 
-yl = get(gca, 'YLim');
-line( [cut_off_frequency cut_off_frequency], yl )
-xlabel('Frequency'); ylabel('Amplitude');
-title('Average sampling');
-hold off
 
-disp('cut_off_frequency')
-disp(cut_off_frequency)
+
 
